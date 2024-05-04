@@ -1,29 +1,31 @@
-const ul = document.querySelector('ul')
-
 function getGoogleRepos() {
     fetch('https://api.github.com/orgs/google/repos')
-     .then(async res => {
-        if(!res.ok) {
-            throw new Error(res.status)
+      .then(async res => {
+        if (!res.ok) {
+          throw new Error(res.status);
         }
-
-        var data = await res.json()
-
+  
+        const data = await res.json();
+  
+        const tabela = document.getElementById('tabela-repos').querySelector('tbody');
+  
         data.map(item => {
-            let li = document.createElement('li')
+          const tr = document.createElement('tr');
+  
+          tr.innerHTML = `
 
-            li.innerHTML = `
-            <strong>${item.name.toUpperCase()}</strong>
-            <span>URL: ${item.url}</span>
-            <span>Imagem do Proprietário:
-             ${item.owner.avatar_url}
-            </span>
-            `
-            ul.appendChild(li)
-        })
+         </thead>
+         <tbody>
+            <th>${item.name.toUpperCase()}</th>
+            <th>${item.url}</th>
+            <th><img src="${item.owner.avatar_url}" alt="Imagem do Proprietário" width="30%" height="30%" ></th>
+         </tbody>
+           `
+  
+          tabela.appendChild(tr);
+        });
+      })
+      .catch(e => console.error(e));
+  }
 
-     }).catch(e => console.log(e))
-    
-}
-
-getGoogleRepos()
+  getGoogleRepos()
